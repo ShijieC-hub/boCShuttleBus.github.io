@@ -26,34 +26,30 @@
 </style>
 
 
+<nav class="navbar navbar-fixed-top navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">金科班车小助手Demo</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">地图总览</a></li>
+          <li><a href="#">最近班车</a></li>
+          <li><a href="#">意见反馈</a></li>
+        </ul>
+      </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+</nav><!-- /.navbar -->
+<p> </br> </p>
+<p> </br> </p>
+
 <body>
-
-    
-    <nav class="navbar navbar-fixed-top navbar-inverse">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">金科班车小助手Demo</a>
-          </div>
-          <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#">地图总览</a></li>
-              <li><a href="#">最近班车</a></li>
-              <li><a href="#">意见反馈</a></li>
-            </ul>
-          </div><!-- /.nav-collapse -->
-        </div><!-- /.container -->
-    </nav><!-- /.navbar -->
-      
-
-
-      
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
@@ -63,7 +59,7 @@
             <div class="col-md-4">
                 <div class="row">
                     <div class="col-xs-4 col-sm-4">
-                        <button type="button" class="btn btn-success btn-lg btn-block" onclick="goToWorkMarker()">上班</button>
+                        <button type="button" class="btn btn-success  btn-block" onclick="goToWorkMarker()">上班</button>
                     </div>
                     <div class="col-xs-8 col-sm-8">
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -82,7 +78,7 @@
 
                 <div class="row">
                     <div class="col-xs-4 col-sm-4">
-                        <button type="button" class="btn btn-success btn-lg btn-block" onclick="getOffWorkMarker()">下班</button>
+                        <button type="button" class="btn btn-success  btn-block" onclick="getOffWorkMarker()">下班</button>
                     </div>
                     <div class="col-xs-8 col-sm-8">
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -101,7 +97,7 @@
 
                 <div class="row">
                     <div class="col-xs-4 col-sm-4">
-                        <button type="button" class="btn btn-warning btn-lg btn-block" onclick="goToNightWorkMarker()">下夜班</button>
+                        <button type="button" class="btn btn-warning  btn-block" onclick="goToNightWorkMarker()">下夜班</button>
                     </div>
                     <div class="col-xs-8 col-sm-8">
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
