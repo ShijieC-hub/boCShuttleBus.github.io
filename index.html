@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <!-- JQ -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=QUbiklyqrydgrKsO3trrTrR6e9dxxZrf"></script>
+    <title>Document</title>
+    
+
+
+</head>
+
+
+<style type="text/css">
+   
+    #container{height: 400px;}  
+
+</style>
+
+
+<body>
+
+    
+    <nav class="navbar navbar-fixed-top navbar-inverse">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">金科班车小助手Demo</a>
+          </div>
+          <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">地图总览</a></li>
+              <li><a href="#">最近班车</a></li>
+              <li><a href="#">意见反馈</a></li>
+            </ul>
+          </div><!-- /.nav-collapse -->
+        </div><!-- /.container -->
+    </nav><!-- /.navbar -->
+      
+
+
+      
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div id="container"></div>
+                <p> </br> </p>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4">
+                        <button type="button" class="btn btn-success btn-lg btn-block" onclick="goToWorkMarker()">上班</button>
+                    </div>
+                    <div class="col-xs-8 col-sm-8">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" id="500" onclick="distanceCircleGT(500)">500米</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" id="1000" onclick="distanceCircleGT(1000)">1000米</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" id="1500" onclick="distanceCircleGT(1500)">1500米</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4">
+                        <button type="button" class="btn btn-success btn-lg btn-block" onclick="getOffWorkMarker()">下班</button>
+                    </div>
+                    <div class="col-xs-8 col-sm-8">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" id="500" onclick="distanceCircleGF(500)">500米</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" id="1000" onclick="distanceCircleGF(1000)">1000米</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" id="1500" onclick="distanceCircleGF(1500)">1500米</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4">
+                        <button type="button" class="btn btn-warning btn-lg btn-block" onclick="goToNightWorkMarker()">下夜班</button>
+                    </div>
+                    <div class="col-xs-8 col-sm-8">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" id="500" onclick="distanceCircleN(500)">500米</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" id="1000" onclick="distanceCircleN(1000)">1000米</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" id="1500" onclick="distanceCircleN(1500)">1500米</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <button type="button" class="btn btn-danger btn-lg btn-block" onclick="removeOverlay()">清除覆盖物</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+</body>
+
+
+
+
+
+
+
+
+
+<script>
+
+    
+
+    var pointArray = new Array; // 所有点位
+    var markerArray = new Array; //所有标记点
+    var circleArray = new Array; //所有圆圈
+
+    var pointArrayGT = new Array; //上班点位
+    var markerArrayGT = new Array;//上班标记点
+    var circleArrayGT = new Array; //上班圆圈
+
+    var pointArrayGF = new Array; //下班点位
+    var markerArrayGF = new Array;//下班标记点
+    var circleArrayGF = new Array; //下班圆圈
+
+    var pointArrayN = new Array; //下夜班点位
+    var markerArrayN = new Array;//下夜班标记点
+    var circleArrayN = new Array; //下夜班圆圈
+
+
+
+
+
+
+
+
+
+
+    var map = new BMap.Map("container"); 
+    var point = new BMap.Point(121.67297, 31.246615)
+    map.centerAndZoom(point, 12);  
+    map.enableScrollWheelZoom(true);
+    //初始化___________________________________________________________________________________________________上班
+    var BOCfintechPoint = new BMap.Point(121.67297, 31.246615)
+    var marker000 = new BMap.Marker(BOCfintechPoint);        // 中银金科 000
+    pointArray[0] = BOCfintechPoint;
+    markerArray[0] = marker000;
+
+    var nineSixGroundPoint = new BMap.Point(121.531409, 31.23345)
+    var marker001 = new BMap.Marker(nineSixGroundPoint);        // 96广场 001
+    pointArray[1] = nineSixGroundPoint;
+    markerArray[1] = marker001;
+
+    var longyangRoadPoint = new BMap.Point(121.562169,31.206948)
+    var marker002 = new BMap.Marker(longyangRoadPoint);        // 龙阳路站 002
+    pointArray[2] = longyangRoadPoint;
+    markerArray[2] = marker002; 
+
+    var chuanShaPoint = new BMap.Point(121.704176,31.192727)
+    var marker003 = new BMap.Marker(chuanShaPoint);        // 川沙站 003
+    pointArray[3] = chuanShaPoint;
+    markerArray[3] = marker003; 
+ 
+
+    var huaXiaDongRoadPoint = new BMap.Point(121.68773,31.202643)
+    var marker004 = new BMap.Marker(huaXiaDongRoadPoint);        // 华夏东路站 004
+    pointArray[4] = huaXiaDongRoadPoint;
+    markerArray[4] = marker004; 
+
+    var jinHaiRoadPoint = new BMap.Point(121.645923,31.26995)
+    var marker005 = new BMap.Marker(jinHaiRoadPoint);        // 金海路站 005
+    pointArray[5] = jinHaiRoadPoint;
+    markerArray[5] = marker005; 
+
+    var yulanXiangYuanPoint = new BMap.Point(121.633367,31.203132)
+    var marker006 = new BMap.Marker(yulanXiangYuanPoint);        // 玉兰香苑 006
+    pointArray[6] = yulanXiangYuanPoint;
+    markerArray[6] = marker006; 
+
+    var yiJiangRoadPoint = new BMap.Point(121.639709,31.20551)
+    var marker007 = new BMap.Marker(yiJiangRoadPoint);        // 益江路中段 007
+    pointArray[7] = yiJiangRoadPoint;
+    markerArray[7] = marker007;
+
+    var zhangDongRoadPoint = new BMap.Point(121.64246,31.207162)
+    var marker008 = new BMap.Marker(zhangDongRoadPoint);        // 张东路（近溢江路） 008
+    pointArray[8] = zhangDongRoadPoint;
+    markerArray[8] = marker008;
+
+    var chuangxinXiRoadPoint = new BMap.Point(121.665332,31.21074)
+    var marker009 = new BMap.Marker(chuangxinXiRoadPoint);        // 创新西路 009
+    pointArray[9] = chuangxinXiRoadPoint;
+    markerArray[9] = marker009;
+
+    var renCaiTangZhenPoint = new BMap.Point(121.673896,31.217425)
+    var marker010 = new BMap.Marker(renCaiTangZhenPoint);        // 唐镇人才公寓东门 010
+    pointArray[10] = renCaiTangZhenPoint;
+    markerArray[10] = marker010;
+
+    var tangZhenRoadPoint = new BMap.Point(121.661223,31.215554)
+    var marker011 = new BMap.Marker(tangZhenRoadPoint);        // 唐镇路（近唐陆公路、镇政府） 011
+    pointArray[11] = tangZhenRoadPoint;
+    markerArray[11] = marker011;
+
+    var finaTechRoadPoint = new BMap.Point(121.6081,31.210129)
+    var marker012 = new BMap.Marker(finaTechRoadPoint);        // 金科路 012
+    pointArray[12] = finaTechRoadPoint;
+    markerArray[12] = marker012;
+
+    //初始化___________________________________________________________________________________________________ + 下班
+    var guangLanRoadPoint = new BMap.Point(121.627342,31.216848)
+    var marker013 = new BMap.Marker(guangLanRoadPoint);        // 广兰路 013
+    pointArray[13] = guangLanRoadPoint;
+    markerArray[13] = marker013;
+
+
+
+    //初始化___________________________________________________________________________________________________ + 下夜班
+    var shengXiaRoadPoint = new BMap.Point(121.638333,31.205107)
+    var marker014 = new BMap.Marker(shengXiaRoadPoint);        // 盛夏路（益江路口） 014
+    pointArray[14] = shengXiaRoadPoint;
+    markerArray[14] = marker014;
+
+
+
+
+    //装填___________________________________________________________________________________________________上班
+    for(var i = 0; i < 12; i ++){
+        pointArrayGT[i] = pointArray[i + 1];
+        markerArrayGT[i] = markerArray[i + 1];
+
+    }
+    //装填___________________________________________________________________________________________________下班
+    for(var i = 0; i < 13; i ++){
+        if(i != 3){
+            pointArrayGF[i] = pointArray[i + 1];
+            markerArrayGF[i] = markerArray[i + 1];
+        }
+    }
+
+    
+    //装填___________________________________________________________________________________________________下夜班
+    pointArrayN.push(guangLanRoadPoint);
+    pointArrayN.push(renCaiTangZhenPoint);
+    pointArrayN.push(chuangxinXiRoadPoint);
+    pointArrayN.push(tangZhenRoadPoint);
+    pointArrayN.push(zhangDongRoadPoint);
+    pointArrayN.push(shengXiaRoadPoint);
+
+    var markerN000 = new BMap.Marker(guangLanRoadPoint);
+    var markerN001 = new BMap.Marker(renCaiTangZhenPoint);
+    var markerN002 = new BMap.Marker(chuangxinXiRoadPoint);
+    var markerN003 = new BMap.Marker(tangZhenRoadPoint);
+    var markerN004 = new BMap.Marker(zhangDongRoadPoint);
+    var markerN005 = new BMap.Marker(shengXiaRoadPoint);
+
+    markerArrayN.push(markerN000);
+    markerArrayN.push(markerN001);
+    markerArrayN.push(markerN002);
+    markerArrayN.push(markerN003);
+    markerArrayN.push(markerN004);
+    markerArrayN.push(markerN005);
+
+
+
+    var circleBOC = new BMap.Circle(BOCfintechPoint,1500,{strokeColor:"red", strokeWeight:2, strokeOpacity:0.5}); //公司范围默认1500
+
+
+    //上班 标记点 打点
+    function goToWorkMarker(){
+        map.clearOverlays();
+        markerArrayGT.forEach(element => {
+            map.addOverlay(element);
+        });
+        map.addOverlay(marker000);
+    }
+
+    //get off the work, overlay the markers
+    function getOffWorkMarker(){
+        map.clearOverlays();
+        markerArrayGF.forEach(element => {
+            map.addOverlay(element);
+        });
+        map.addOverlay(marker000);  
+    }
+
+    //下夜班 标记点 打点
+    function goToNightWorkMarker(){
+        map.clearOverlays();
+        markerArrayN.forEach(element => {
+            map.addOverlay(element);
+        });
+        map.addOverlay(marker000);  
+    }
+
+    //上班 范围
+    function distanceCircleGT(distance){
+        
+        
+        if(circleArrayGT.length != 0 | circleArrayGF.length != 0 | circleArrayN.length != 0){
+            deleteCircle(circleArrayGT);
+            deleteCircle(circleArrayGF);
+            deleteCircle(circleArrayN);
+            map.removeOverlay(circleBOC);
+        
+            distanceCircleDoWrite(pointArrayGT, circleArrayGT, distance);
+        } else {
+            distanceCircleDoWrite(pointArrayGT, circleArrayGT, distance);
+        }
+    }
+
+    //下班 范围
+    function distanceCircleGF(distance){
+        if(circleArrayGT.length != 0 | circleArrayGF.length != 0 | circleArrayN.length != 0){
+            deleteCircle(circleArrayGT);
+            deleteCircle(circleArrayGF);
+            deleteCircle(circleArrayN);
+            map.removeOverlay(circleBOC);
+
+            distanceCircleDoWrite(pointArrayGF, circleArrayGF, distance);
+        } else {
+            distanceCircleDoWrite(pointArrayGF, circleArrayGF, distance);
+        }
+    }
+
+    //下夜班 范围
+    function distanceCircleN(distance){
+        if(circleArrayGT.length != 0 | circleArrayN.length != 0 | circleArrayGF.length != 0){
+            deleteCircle(circleArrayGT);
+            deleteCircle(circleArrayGF);
+            deleteCircle(circleArrayN);
+            map.removeOverlay(circleBOC);
+
+            distanceCircleDoWrite(pointArrayN, circleArrayN, distance);
+        } else {
+            distanceCircleDoWrite(pointArrayN, circleArrayN, distance);
+        }
+    }
+
+
+
+
+    //handler do write
+    function distanceCircleDoWrite(pArrayTemp, cArrayTemp, distance){
+        pArrayTemp.forEach(element => {
+            cArrayTemp.push(new BMap.Circle(element,distance,{strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5}));
+            });
+            cArrayTemp.forEach(element => {
+                map.addOverlay(element);
+            });
+            map.addOverlay(circleBOC);//添加BOC
+    }
+
+    //清楚circle效果,并置空circleArray
+    function deleteCircle(cArrayTemp){
+        cArrayTemp.forEach(element => {
+                map.removeOverlay(element);
+            });
+            cArrayTemp.length = 0;
+    }
+
+
+
+
+
+
+    function removeOverlay(){
+        map.clearOverlays(); 
+    }
+
+
+    //BoC
+    var opts000 = {
+	    width : 200,     
+	    height: 110,     
+	    title : "[BoC ShuttleBus]" , 
+	}
+
+    //BoC
+    var opts001 = {
+	    width : 200,     
+	    height: 110,     
+	    title : "[BoC Night ShuttleBus]" , 
+	}
+
+    //BoC
+    var opts002 = {
+	    width : 200,     
+	    height: 130,     
+	    title : "[BoC ShuttleBus]" , 
+	}
+
+    var infoWindow000 = new BMap.InfoWindow("地址：卡园二路", opts000);  // BOC
+    marker000.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow000, pointArray[0]); 
+	})
+
+    // 96广场 001
+    var infoWindow001 = new BMap.InfoWindow("世纪大道站 >>>>> BoC </br> Dep Time: 7:20 </br> Boc >>>>> 世纪大道站 </br> Dep Time: 17:40", opts000);  // BOC
+    marker001.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow001, pointArray[1]); 
+	})
+
+    // 龙阳路站 002
+    var infoWindow002 = new BMap.InfoWindow("龙阳路站 >>>>> BoC </br> Dep Time: 7:20 </br> Boc >>>>> 龙阳路站 </br> Dep Time: 17:40", opts000);  // BOC
+    marker002.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow002, pointArray[2]); 
+	})
+
+    // 川沙站 003
+    var infoWindow003 = new BMap.InfoWindow("川沙站 >>>>> BoC </br> Dep Time: 7:30 </br> Boc >>>>> 川沙站 </br> Dep Time: 17:40", opts000);  // BOC
+    marker003.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow003, pointArray[3]); 
+	})
+
+    // 华夏东路站 004
+    var infoWindow004 = new BMap.InfoWindow("华夏东站 >>>>> BoC </br> Dep Time: 7:45", opts000);  // 下班不停
+    marker004.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow004, pointArray[4]); 
+	})
+
+    // 金海路站 005
+    var infoWindow005 = new BMap.InfoWindow("金海路站 >>>>> BoC </br> Dep Time: 7:45 </br> Boc >>>>> 金海路站 </br> Dep Time: 17:40", opts000);  // BOC
+    marker005.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow005, pointArray[5]); 
+	})
+
+    // 玉兰香苑 006
+    var infoWindow006 = new BMap.InfoWindow("玉兰香苑站 >>>>> BoC </br> Dep Time: 7:45 </br> Boc >>>>> 玉兰香苑站 </br> Dep Time: 17:40", opts000);  // BOC
+    marker006.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow006, pointArray[6]); 
+	})
+
+    // 益江路中段 007
+    var infoWindow007 = new BMap.InfoWindow("益江路中段站 >>>>> BoC </br> Dep Time: 7:48 </br> Boc >>>>> 益江路中段站 </br> Dep Time: 17:40", opts000);  // BOC
+    marker007.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow007, pointArray[7]); 
+	})
+
+    // 张东路（近溢江路） 008
+    var infoWindow008 = new BMap.InfoWindow("张东路站 >>>>> BoC </br> Dep Time: 7:50 </br> Boc >>>>> 张东路站 </br> Dep Time: 17:40", opts000);  // BOC
+    marker008.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow008, pointArray[8]); 
+	})
+
+    // 创新西路 009
+    var infoWindow009 = new BMap.InfoWindow("创新西路站 >>>>> BoC </br> Dep Time: 7:50 </br> Boc >>>>> 创新西路站 </br> Dep Time: 17:40", opts000);  // BOC
+    marker009.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow009, pointArray[9]); 
+	})
+
+    
+
+    // 唐镇人才公寓东门 010
+    var infoWindow010 = new BMap.InfoWindow("唐镇人才公寓站 >>>>> BoC </br> Dep Time: 7:50 & 7:54 & 8:00 </br> Boc >>>>> 唐镇人才公寓站 </br> Dep Time: 17:40", opts000);  // BOC
+    marker010.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow010, pointArray[10]); 
+	})
+
+    // 唐镇路（近唐陆公路、镇政府） 011
+    var infoWindow011 = new BMap.InfoWindow("唐镇路站 >>>>> BoC </br> Dep Time: 7:55 </br> Boc >>>>> 唐镇路站 </br> Dep Time: 17:40", opts000);  // BOC
+    marker011.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow011, pointArray[11]); 
+	})
+
+    // 金科路 012
+    var infoWindow012 = new BMap.InfoWindow("金科路站 >>>>> BoC </br> Dep Time: 7:30 & 7:45 & 7:50 & 9:40 & 16:20 </br> Boc >>>>> 唐镇路站 </br> Dep Time: 17:50", opts002);  // BOC
+    marker012.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow012, pointArray[12]); 
+	})
+
+    // 广兰路 013
+    var infoWindow013 = new BMap.InfoWindow("BoC >>>>> 广兰路站 </br> Dep Time: 17:40 </br> 附近地铁线: 2", opts000);  // BOC
+    marker013.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow013, pointArray[13]); 
+	})
+
+    //下夜班  重新配置
+    //广兰路 014
+    var infoWindow014 = new BMap.InfoWindow("BoC >>>>> 广兰路站 </br> Dep Time: 20:00 & 21:00", opts001);  // BOC
+    markerN000.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow014, pointArrayN[0]); 
+	})
+
+    //人才公寓 015
+    var infoWindow015 = new BMap.InfoWindow("BoC >>> 人才公寓站 </br> Dep Time: 20:00 & 21:00", opts001);  // BOC
+    markerN001.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow015, pointArrayN[1]); 
+	})
+
+    //创新西路 016
+    var infoWindow016 = new BMap.InfoWindow("BoC >>> 创新西路站 </br> Dep Time: 20:00 & 21:00", opts001);  // BOC
+    markerN002.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow016, pointArrayN[2]); 
+	})
+
+    //唐镇路 017
+    var infoWindow017 = new BMap.InfoWindow("BoC >>> 唐镇路站 </br> Dep Time: 20:00 & 21:00", opts001);  // BOC
+    markerN003.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow017, pointArrayN[3]); 
+	})
+
+    //张东路 018
+    var infoWindow018 = new BMap.InfoWindow("BoC >>> 张东路站 </br> Dep Time: 20:00 & 21:00", opts001);  // BOC
+    markerN004.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow018, pointArrayN[4]); 
+	})
+
+    //盛夏路 019
+    var infoWindow019 = new BMap.InfoWindow("BoC >>> 盛夏路站 </br> Dep Time: 20:00 & 21:00", opts001);  // BOC
+    markerN005.addEventListener("click", function(e){          
+		map.openInfoWindow(infoWindow019, pointArrayN[5]); 
+	})
+
+
+
+
+
+
+</script>    
+</html>
