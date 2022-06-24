@@ -397,24 +397,15 @@
 	    title : "[BoC ShuttleBus]", 
 	}
 
+    var u = navigator.userAgent;
+    
     var iosFlag = new Boolean;
-    iosFlag = false;
+    iosFlag = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
     var andrFlag = new Boolean;
-    andrFlag = false;
+    andrFlag = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;;
 
-    //判断移动终端种类
-    $(function () {
-        var u = navigator.userAgent, app = navigator.appVersion;
-        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //andr
-        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios
-        if (isAndroid) {
-            andrFlag = true;
-        }
-        if (isIOS) {
-            iosFlag = true;
-        }
-    });
+    
 
 
     //金科 000
@@ -431,21 +422,21 @@
         
         marker000.addEventListener("click", function(){          
 		    map.openInfoWindow(infoWindow000ios, pointArray[0]); 
-            alert(iosFlag, andrFlag, "ios")
+
 	})
     }
     else if(andrFlag == true){
 
         marker000.addEventListener("click", function(){          
 		    map.openInfoWindow(infoWindow000andr, pointArray[0]); 
-            alert(iosFlag, andrFlag, "andr")
+            
 	})
     }
     else{
         
         marker000.addEventListener("click", function(){          
 		    map.openInfoWindow(infoWindow000, pointArray[0]); 
-            alert(iosFlag, andrFlag, "else")
+            
     })
     }
 
