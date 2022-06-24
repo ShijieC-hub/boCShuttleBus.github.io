@@ -431,21 +431,21 @@
         
         marker000.addEventListener("click", function(){          
 		    map.openInfoWindow(infoWindow000ios, pointArray[0]); 
-            alert(iosFlag)
+            alert(iosFlag, andrFlag, "ios")
 	})
     }
     else if(andrFlag == true){
 
         marker000.addEventListener("click", function(){          
 		    map.openInfoWindow(infoWindow000andr, pointArray[0]); 
-            alert(iosFlag)
+            alert(iosFlag, andrFlag, "andr")
 	})
     }
     else{
         
         marker000.addEventListener("click", function(){          
 		    map.openInfoWindow(infoWindow000, pointArray[0]); 
-            alert(iosFlag)
+            alert(iosFlag, andrFlag, "else")
     })
     }
 
