@@ -99,6 +99,18 @@
 
 <script>
 
+    $(function () {
+        var u = navigator.userAgent, app = navigator.appVersion;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if (isAndroid) {
+            alert("安卓机！")
+        }
+        if (isIOS) {
+            alert("苹果果机！")
+        }
+    });
+
     var pointArray = new Array; // 所有点位
     var markerArray = new Array; //所有标记点
     var circleArray = new Array; //所有圆圈
