@@ -415,7 +415,7 @@
             iosFlag = true;
         }
     });
-    
+
 
     //金科 000
     var content000ios = '<div></br></br></br><a role="button" class="btn btn-primary btn-sm btn-block" href="baidumap://map/marker?location=31.246615,121.67297&title=BoC站&content=BoCShuttleBus&src=ios.baidu.openAPIdemo">百度地图中打开</a></div>';
@@ -430,22 +430,22 @@
     if(iosFlag == true){
         
         marker000.addEventListener("click", function(){          
-		map.openInfoWindow(infoWindow000ios, pointArray[0]); 
-        alert("ios")
+		    map.openInfoWindow(infoWindow000ios, pointArray[0]); 
+            alert(iosFlag)
 	})
     }
     else if(andrFlag == true){
 
         marker000.addEventListener("click", function(){          
 		    map.openInfoWindow(infoWindow000andr, pointArray[0]); 
-            alert("andr")
+            alert(iosFlag)
 	})
     }
     else{
         
         marker000.addEventListener("click", function(){          
 		    map.openInfoWindow(infoWindow000, pointArray[0]); 
-            alert("else")
+            console.log(iosFlag)
     })
     }
 
