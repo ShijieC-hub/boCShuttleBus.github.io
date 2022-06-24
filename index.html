@@ -124,7 +124,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div> 
 </body>
 
 
@@ -418,7 +418,11 @@
 	    title : "[BoC ShuttleBus]" , 
 	}
 
-    var infoWindow000 = new BMap.InfoWindow("地址：卡园二路", opts000);  // BOC
+    var content = '<div><button type="button" class="btn btn-default btn-sm btn-block">'+
+        '<a href="http://api.map.baidu.com/marker?location=31.246615,121.67297&title=BoCShuttleBus&content=BoC站&output=html">'+
+            '百度地图中打开</a></button></div>';
+
+    var infoWindow000 = new BMap.InfoWindow(content, opts000);  // BOC
     marker000.addEventListener("click", function(e){          
 		map.openInfoWindow(infoWindow000, pointArray[0]); 
 	})
