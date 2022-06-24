@@ -57,6 +57,12 @@
     </nav><!-- /.navbar -->
     <p> </br> </p>
     <p> </br> </p>
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>提示:</strong></br>
+        1. 点击 加载停靠点 下方按钮，相应点位将被显示在地图上。</br>
+        2. 点击地图上的点位可获得更多信息. 
+    </div>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
@@ -70,7 +76,7 @@
                 </div>
                 <div class="row" id="btn">
                     <div class="col-xs-4 col-sm-4">
-                        <button type="button" class="btn btn-success  btn-block" onclick="goToWorkMarker()">上班</button>
+                        <button type="button" class="btn btn-success  btn-block"  onclick="goToWorkMarker()">上班</button>
                     </div>
                     <div class="col-xs-8 col-sm-8">
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -142,8 +148,6 @@
 
 
 <script>
-
-    
 
     var pointArray = new Array; // 所有点位
     var markerArray = new Array; //所有标记点
