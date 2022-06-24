@@ -155,15 +155,6 @@
     var markerArrayN = new Array;//下夜班标记点
     var circleArrayN = new Array; //下夜班圆圈
 
-
-
-
-
-
-
-
-
-
     var map = new BMap.Map("container"); 
     var point = new BMap.Point(121.67297, 31.246615)
     map.centerAndZoom(point, 12);  
@@ -241,16 +232,11 @@
     pointArray[13] = guangLanRoadPoint;
     markerArray[13] = marker013;
 
-
-
     //初始化___________________________________________________________________________________________________ + 下夜班
     var shengXiaRoadPoint = new BMap.Point(121.638333,31.205107)
     var marker014 = new BMap.Marker(shengXiaRoadPoint);        // 盛夏路（益江路口） 014
     pointArray[14] = shengXiaRoadPoint;
     markerArray[14] = marker014;
-
-
-
 
     //装填___________________________________________________________________________________________________上班
     for(var i = 0; i < 12; i ++){
@@ -265,8 +251,7 @@
             markerArrayGF[i] = markerArray[i + 1];
         }
     }
-
-    
+ 
     //装填___________________________________________________________________________________________________下夜班
     pointArrayN.push(guangLanRoadPoint);
     pointArrayN.push(renCaiTangZhenPoint);
@@ -289,10 +274,7 @@
     markerArrayN.push(markerN004);
     markerArrayN.push(markerN005);
 
-
-
     var circleBOC = new BMap.Circle(BOCfintechPoint,1500,{strokeColor:"red", strokeWeight:2, strokeOpacity:0.5}); //公司范围默认1500
-
 
     //上班 标记点 打点
     function goToWorkMarker(){
@@ -365,9 +347,6 @@
         }
     }
 
-
-
-
     //handler do write
     function distanceCircleDoWrite(pArrayTemp, cArrayTemp, distance){
         pArrayTemp.forEach(element => {
@@ -387,20 +366,14 @@
             cArrayTemp.length = 0;
     }
 
-
-
-
-
-
     function removeOverlay(){
         map.clearOverlays(); 
     }
 
-
     //BoC
     var opts000 = {
 	    width : 200,     
-	    height: 110,     
+	    height: 140,     
 	    title : "[BoC ShuttleBus]" , 
 	}
 
@@ -418,7 +391,7 @@
 	    title : "[BoC ShuttleBus]", 
 	}
 
-    var content000 = '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.246615,121.67297&title=BoCShuttleBus&content=BoC站&output=html">百度地图中打开</a></div>';
+    var content000 = '<div></br></br></br><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.246615,121.67297&title=BoCShuttleBus&content=BoC站&output=html">百度地图中打开</a></div>';
 
     var infoWindow000 = new BMap.InfoWindow(content000, opts000);  // BOC
     marker000.addEventListener("click", function(e){          
@@ -426,7 +399,11 @@
 	})
 
     // 96广场 001
-    var infoWindow001 = new BMap.InfoWindow("世纪大道站 >>>>> BoC </br> Dep Time: 7:20 </br> Boc >>>>> 世纪大道站 </br> Dep Time: 17:40", opts000);  // BOC
+
+    var content001 = '世纪大道站 >>>>> BoC </br> Dep Time: 7:20 </br> Boc >>>>> 世纪大道站 </br> Dep Time: 17:40</br>'+
+    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.23345,121.531409&title=BoCShuttleBus&content=世纪大道站&output=html">百度地图中打开</a></div>';
+
+    var infoWindow001 = new BMap.InfoWindow(content001, opts000);  // BOC
     marker001.addEventListener("click", function(e){          
 		map.openInfoWindow(infoWindow001, pointArray[1]); 
 	})
