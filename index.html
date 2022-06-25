@@ -115,6 +115,7 @@
     var markerArrayN = new Array;//下夜班标记点
     var circleArrayN = new Array; //下夜班圆圈
 
+    //定义flag
     var goToWorkFlag = new Boolean;
     goToWorkFlag = false;
     var getOffWorkFlag = new Boolean;
@@ -122,6 +123,11 @@
     var getOffNightWorkFlag = new Boolean;
     getOffNightWorkFlag = false;
 
+    //定义弹窗contentArr
+    contentArray00 = new Array; //normal
+    contentArray01 = new Array; //night
+
+    //定义地图
     var map = new BMap.Map("container"); 
     var point = new BMap.Point(121.67297, 31.246615)
     map.centerAndZoom(point, 11);  
@@ -220,27 +226,13 @@
     }
  
     //装填___________________________________________________________________________________________________下夜班
-    pointArrayN.push(guangLanRoadPoint);
-    pointArrayN.push(renCaiTangZhenPoint);
-    pointArrayN.push(chuangxinXiRoadPoint);
-    pointArrayN.push(tangZhenRoadPoint);
-    pointArrayN.push(zhangDongRoadPoint);
-    pointArrayN.push(shengXiaRoadPoint);
+    pointArrayN = [guangLanRoadPoint,renCaiTangZhenPoint,chuangxinXiRoadPoint,tangZhenRoadPoint,zhangDongRoadPoint,shengXiaRoadPoint];
+    
+    pointArrayN.forEach(element => {
+        markerArrayN.push(new BMap.Marker(element));
+    });
 
-    var markerN000 = new BMap.Marker(guangLanRoadPoint);
-    var markerN001 = new BMap.Marker(renCaiTangZhenPoint);
-    var markerN002 = new BMap.Marker(chuangxinXiRoadPoint);
-    var markerN003 = new BMap.Marker(tangZhenRoadPoint);
-    var markerN004 = new BMap.Marker(zhangDongRoadPoint);
-    var markerN005 = new BMap.Marker(shengXiaRoadPoint);
-
-    markerArrayN.push(markerN000);
-    markerArrayN.push(markerN001);
-    markerArrayN.push(markerN002);
-    markerArrayN.push(markerN003);
-    markerArrayN.push(markerN004);
-    markerArrayN.push(markerN005);
-
+    //BoC的范围
     var circleBOC = new BMap.Circle(BOCfintechPoint,1500,{strokeColor:"red", strokeWeight:2, strokeOpacity:0.5}); //公司范围默认1500
 
     //上班 标记点 打点
@@ -294,8 +286,6 @@
 
     //上班 范围
     function distanceCircleGT(distance){
-        
-        
         if(circleArrayGT.length != 0 | circleArrayGF.length != 0 | circleArrayN.length != 0){
             deleteCircle(circleArrayGT);
             deleteCircle(circleArrayGF);
@@ -394,55 +384,17 @@
     var opts001 = {
 	    width : 200,     
 	    height: 100,     
-	    title : "[BoC ShuttleBus]", 
+	    title : "[BoC Night ShuttleBus]", 
 	}
 
     var u = navigator.userAgent;
-
+    //ios判断
     var iosFlag = new Boolean;
     iosFlag = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-
+    //andr判断
     var andrFlag = new Boolean;
     andrFlag = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;;
 
-    
-
-
-    //金科 000
-    var content000ios = '<div></br></br></br><a role="button" class="btn btn-primary btn-sm btn-block" href="baidumap://map/marker?location=31.246615,121.67297&title=BoC站&content=BoCShuttleBus&src=ios.baidu.openAPIdemo">百度地图中打开</a></div>';
-    var infoWindow000ios = new BMap.InfoWindow(content000ios, opts000);  // BOC
-
-    var content000andr = '<div></br></br></br><a role="button" class="btn btn-primary btn-sm btn-block" href="bdapp://map/marker?location=31.246615,121.67297&title=BoC站&content=BoCShuttleBus&traffic=on&src=andr.baidu.openAPIdemo">百度地图中打开</a></div>';
-    var infoWindow000andr = new BMap.InfoWindow(content000andr, opts000);  // BOC
-
-    var content000 = '<div></br></br></br><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.246615,121.67297&title=BoC站&content=BoCShuttleBus&output=html">百度地图中打开</a></div>';
-    var infoWindow000 = new BMap.InfoWindow(content000, opts000);  // BOC
-
-    if(iosFlag){
-        
-        marker000.addEventListener("click", function(){          
-		    map.openInfoWindow(infoWindow000ios, pointArray[0]); 
-
-	})
-    }
-    else if(andrFlag){
-
-        marker000.addEventListener("click", function(){          
-		    map.openInfoWindow(infoWindow000andr, pointArray[0]); 
-            
-	})
-    }
-    else{
-        
-        marker000.addEventListener("click", function(){          
-		    map.openInfoWindow(infoWindow000, pointArray[0]); 
-            
-    })
-    }
-
-    // 96广场 001  
-
-    alert(chuanShaPoint.lat + "," + chuanShaPoint.lng)
     //信息弹窗按钮生成
     //Baidu API Schema:  
     function callBaiDuMapUrl(content, point, title, body, iosFlag, andrFlag){
@@ -475,216 +427,101 @@
         }
     }
     
-
-
-
+    //金科 000
+    var content000 = '中银金科</br>地址 : 上海市浦东新区卡园二路288号 </br>　';
+    contentArray00.push(callBaiDuMapUrl(content000,BOCfintechPoint, 'BoC站', 'BoCShuttleBus', iosFlag, andrFlag));
+    
+    // 96广场 001  
+    var content001 = '世纪大道站 >>>>> BoC </br> Dep Time: 7:20 </br> Boc >>>>> 世纪大道站 </br> Dep Time: 17:40</br>';
+    contentArray00.push(callBaiDuMapUrl(content001,nineSixGroundPoint, '世纪大道站', 'BoCShuttleBus', iosFlag, andrFlag));
   
-    var content001P1 = '世纪大道站 >>>>> BoC </br> Dep Time: 7:20 </br> Boc >>>>> 世纪大道站 </br> Dep Time: 17:40</br>';
-    var content001 = callBaiDuMapUrl(content001P1,nineSixGroundPoint, '世纪大道站', 'BoCShuttleBus', iosFlag, andrFlag);
-    var infoWindow001 = new BMap.InfoWindow(content001, opts000);  // BOC
-    marker001.addEventListener("click", function(){          
-	map.openInfoWindow(infoWindow001, pointArray[1]); 
-    })
-
-    
-
     // 龙阳路站 002
-    
-    var content002P1 = '龙阳路站 >>>>> BoC </br> Dep Time: 7:20 </br> Boc >>>>> 龙阳路站 </br> Dep Time: 17:40';
-    var content002 = callBaiDuMapUrl(content002P1,longyangRoadPoint, '龙阳路站', 'BoCShuttleBus', iosFlag, andrFlag);
-    var infoWindow002 = new BMap.InfoWindow(content002, opts000);  // BOC
-        marker002.addEventListener("click", function(){          
-		    map.openInfoWindow(infoWindow002, pointArray[2]); 
-	})
-    
+    var content002 = '龙阳路站 >>>>> BoC </br> Dep Time: 7:20 </br> Boc >>>>> 龙阳路站 </br> Dep Time: 17:40';
+    contentArray00.push(callBaiDuMapUrl(content002,longyangRoadPoint, '龙阳路站', 'BoCShuttleBus', iosFlag, andrFlag));
 
     // 川沙站 003
-    if(iosFlag == true){
-        var content003ios = '川沙站 >>>>> BoC </br> Dep Time: 7:30 </br> Boc >>>>> 川沙站 </br> Dep Time: 17:40'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="baidumap://map/marker?location=31.192727,121.704176&title=川沙站&content=BoCShuttleBus&src=ios.baidu.openAPIdemo">百度地图中打开</a></div>';
-        var infoWindow003ios = new BMap.InfoWindow(content003ios, opts000);  // BOC
-        marker003.addEventListener("click", function(){          
-		    map.openInfoWindow(infoWindow003ios, pointArray[3]); 
-	})
-    }
-    else if(andrFlag == true){
-        var content003andr = '川沙站 >>>>> BoC </br> Dep Time: 7:30 </br> Boc >>>>> 川沙站 </br> Dep Time: 17:40'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="bdapp://map/marker?location=31.192727,121.704176&title=川沙站&content=BoCShuttleBus&traffic=on&src=andr.baidu.openAPIdemo">百度地图中打开</a></div>';
-        var infoWindow003andr = new BMap.InfoWindow(content003andr, opts000);  // BOC
-        marker003.addEventListener("click", function(){          
-		    map.openInfoWindow(infoWindow003andr, pointArray[3]); 
-	})
-    }
-    else{
-        var content003 = '川沙站 >>>>> BoC </br> Dep Time: 7:30 </br> Boc >>>>> 川沙站 </br> Dep Time: 17:40'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.192727,121.704176&title=川沙站&content=BoCShuttleBus&output=html">百度地图中打开</a></div>';
-        var infoWindow003 = new BMap.InfoWindow(content003, opts000);  // BOC
-        marker003.addEventListener("click", function(e){          
-		    map.openInfoWindow(infoWindow003, pointArray[3]); 
-	})
-    }
-    
+    var content003 = '川沙站 >>>>> BoC </br> Dep Time: 7:30 </br> Boc >>>>> 川沙站 </br> Dep Time: 17:40';
+    contentArray00.push(callBaiDuMapUrl(content003,chuanShaPoint, '川沙站', 'BoCShuttleBus', iosFlag, andrFlag));
 
     // 华夏东路站 004
-    if(iosFlag == true){
-        var content004ios = '华夏东站 >>>>> BoC </br> Dep Time: 7:45'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="baidumap://map/marker?location=31.202643,121.68773&title=华夏东路站&content=BoCShuttleBus&src=ios.baidu.openAPIdemo">百度地图中打开</a></div>';
-        var infoWindow004ios = new BMap.InfoWindow(content004ios, opts000);  // BOC
-        marker004.addEventListener("click", function(){          
-		    map.openInfoWindow(infoWindow004ios, pointArray[4]); 
-	})
-    }
-    else if(andrFlag == true){
-        var content004andr = '华夏东站 >>>>> BoC </br> Dep Time: 7:45'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="bdapp://map/marker?location=31.202643,121.68773&title=华夏东路站&content=BoCShuttleBus&traffic=on&src=andr.baidu.openAPIdemo">百度地图中打开</a></div>';
-        var infoWindow004andr = new BMap.InfoWindow(content004andr, opts000);  // BOC
-        marker004.addEventListener("click", function(){          
-		    map.openInfoWindow(infoWindow004andr, pointArray[4]); 
-	})
-    }
-    else{
-        var content004 = '华夏东站 >>>>> BoC </br> Dep Time: 7:45'+
-    '<div></br></br><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.202643,121.68773&title=华夏东路站&content=BoCShuttleBus&output=html">百度地图中打开</a></div>';
-    var infoWindow004 = new BMap.InfoWindow(content004, opts000);  // 下班不停
-        marker004.addEventListener("click", function(){          
-		    map.openInfoWindow(infoWindow004, pointArray[4]); 
-	})
-    }
+    var content004 = '华夏东站 >>>>> BoC </br> Dep Time: 7:45 </br>　</br>　';
+    contentArray00.push(callBaiDuMapUrl(content004,huaXiaDongRoadPoint, '华夏东站', 'BoCShuttleBus', iosFlag, andrFlag));
 
     // 金海路站 005
-    var content005 = '金海路站 >>>>> BoC </br> Dep Time: 7:45 </br> Boc >>>>> 金海路站 </br> Dep Time: 17:40'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.26995,121.645923&title=BoCShuttleBus&content=金海路站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow005 = new BMap.InfoWindow(content005, opts000);  // BOC
-    marker005.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow005, pointArray[5]); 
-	})
+    var content005 = '金海路站 >>>>> BoC </br> Dep Time: 7:45 </br> Boc >>>>> 金海路站 </br> Dep Time: 17:40';
+    contentArray00.push(callBaiDuMapUrl(content005,jinHaiRoadPoint, '金海路站', 'BoCShuttleBus', iosFlag, andrFlag));
 
     // 玉兰香苑 006
-    var content006 = '玉兰香苑站 >>>>> BoC </br> Dep Time: 7:45 </br> Boc >>>>> 玉兰香苑站 </br> Dep Time: 17:40'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.203132,121.633367&title=BoCShuttleBus&content=玉兰香苑站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow006 = new BMap.InfoWindow(content006, opts000);  // BOC
-    marker006.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow006, pointArray[6]); 
-	})
+    var content006 = '玉兰香苑站 >>>>> BoC </br> Dep Time: 7:45 </br> Boc >>>>> 玉兰香苑站 </br> Dep Time: 17:40';
+    contentArray00.push(callBaiDuMapUrl(content006,yulanXiangYuanPoint, '玉兰香苑站', 'BoCShuttleBus', iosFlag, andrFlag));
 
     // 益江路中段 007
-    var content007 = '益江路中段站 >>>>> BoC </br> Dep Time: 7:48 </br> Boc >>>>> 益江路中段站 </br> Dep Time: 17:40'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.20551,121.639709&title=BoCShuttleBus&content=益江路中段站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow007 = new BMap.InfoWindow(content007, opts000);  // BOC
-    marker007.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow007, pointArray[7]); 
-	})
+    var content007 = '益江路中段站 >>>>> BoC </br> Dep Time: 7:48 </br> Boc >>>>> 益江路中段站 </br> Dep Time: 17:40';
+    contentArray00.push(callBaiDuMapUrl(content007,yiJiangRoadPoint, '益江路中段站', 'BoCShuttleBus', iosFlag, andrFlag));
 
     // 张东路（近溢江路） 008
-    var content008 = '张东路站 >>>>> BoC </br> Dep Time: 7:50 </br> Boc >>>>> 张东路站 </br> Dep Time: 17:40'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.207162,121.64246&title=BoCShuttleBus&content=张东路站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow008 = new BMap.InfoWindow(content008, opts000);  // BOC
-    marker008.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow008, pointArray[8]); 
-	})
+    var content008 = '张东路站 >>>>> BoC </br> Dep Time: 7:50 </br> Boc >>>>> 张东路站 </br> Dep Time: 17:40';
+    contentArray00.push(callBaiDuMapUrl(content008,zhangDongRoadPoint, '张东路站', 'BoCShuttleBus', iosFlag, andrFlag));
 
     // 创新西路 009
-    var content009 = '创新西路站 >>>>> BoC </br> Dep Time: 7:50 </br> Boc >>>>> 创新西路站 </br> Dep Time: 17:40'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.21074,121.665332&title=BoCShuttleBus&content=创新西路站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow009 = new BMap.InfoWindow(content009, opts000);  // BOC
-    marker009.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow009, pointArray[9]); 
-	})
+    var content009 = '创新西路站 >>>>> BoC </br> Dep Time: 7:50 </br> Boc >>>>> 创新西路站 </br> Dep Time: 17:40';
+    contentArray00.push(callBaiDuMapUrl(content009,chuangxinXiRoadPoint, '创新西路站', 'BoCShuttleBus', iosFlag, andrFlag));
 
     // 唐镇人才公寓东门 010
-    var content0010 = '唐镇人才公寓站 >>>>> BoC </br> Dep Time: 7:50 & 7:54 & 8:00 </br> Boc >>>>> 唐镇人才公寓站 </br> Dep Time: 17:40'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.217425,121.673896&title=BoCShuttleBus&content=唐镇人才公寓站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow010 = new BMap.InfoWindow(content0010, opts000);  // BOC
-    marker010.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow010, pointArray[10]); 
-	})
+    var content010 = '唐镇人才公寓站 >>>>> BoC </br> Dep Time: 7:50 & 7:54 & 8:00 </br> Boc >>>>> 唐镇人才公寓站 </br> Dep Time: 17:40';
+    contentArray00.push(callBaiDuMapUrl(content010,renCaiTangZhenPoint, '唐镇人才公寓站', 'BoCShuttleBus', iosFlag, andrFlag));
 
     // 唐镇路（近唐陆公路、镇政府） 011
-    var content0011 = '唐镇路站 >>>>> BoC </br> Dep Time: 7:55 </br> Boc >>>>> 唐镇路站 </br> Dep Time: 17:40'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.215554,121.661223&title=BoCShuttleBus&content=唐镇路站&output=html">百度地图中打开</a></div>';
+    var content011 = '唐镇路站 >>>>> BoC </br> Dep Time: 7:55 </br> Boc >>>>> 唐镇路站 </br> Dep Time: 17:40';
+    contentArray00.push(callBaiDuMapUrl(content011,tangZhenRoadPoint, '唐镇路站', 'BoCShuttleBus', iosFlag, andrFlag));
 
-    var infoWindow011 = new BMap.InfoWindow(content0011, opts000);  // BOC
-    marker011.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow011, pointArray[11]); 
+    for(let i  = 0; i < contentArray00.length; i ++){
+        markerArray[i].addEventListener("click", function(){          
+		    map.openInfoWindow(new BMap.InfoWindow(contentArray00[i], opts000), pointArray[i]); 
 	})
+    }
 
     // 金科路 012
-    var content0012 = '金科路站 >>>>> BoC </br> Dep Time: 7:30 & 7:45 & 7:50 & 9:40 & 16:20 </br> Boc >>>>> 金科路站 </br> Dep Time: 17:40 & 17:50'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.210129,121.6081&title=BoCShuttleBus&content=金科路站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow012 = new BMap.InfoWindow(content0012, opts002);  // BOC
+    var content012 = '金科路站 >>>>> BoC </br> Dep Time: 7:30 & 7:45 & 7:50 & 9:40 & 16:20 </br> Boc >>>>> 金科路站 </br> Dep Time: 17:40 & 17:50';
     marker012.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow012, pointArray[12]); 
+		map.openInfoWindow(new BMap.InfoWindow(callBaiDuMapUrl(content012,finaTechRoadPoint, '金科路站', 'BoCShuttleBus', iosFlag, andrFlag), opts002), pointArray[12]); 
 	})
 
     // 广兰路 013
-    var content0013 = 'BoC >>>>> 广兰路站 </br> Dep Time: 17:40'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.216848,121.627342&title=BoCShuttleBus&content=广兰路站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow013 = new BMap.InfoWindow(content0013, opts004);  // BOC
+    var content013 = 'BoC >>>>> 广兰路站 </br> Dep Time: 17:40';
     marker013.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow013, pointArray[13]); 
+		map.openInfoWindow(new BMap.InfoWindow(callBaiDuMapUrl(content013,guangLanRoadPoint, '广兰路', 'BoCShuttleBus', iosFlag, andrFlag), opts004), pointArray[13]); 
 	})
 
     //下夜班  重新配置
     //广兰路 014
-    var content0014 = 'BoC >>>>> 广兰路站 </br> Dep Time: 20:00 & 21:00'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.216848,121.627342&title=BoCNightShuttleBus&content=广兰路站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow014 = new BMap.InfoWindow( content0014, opts001);  // BOC
-    markerN000.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow014, pointArrayN[0]); 
-	})
+    var content014 = 'BoC >>>>> 广兰路站 </br> Dep Time: 20:00 & 21:00';
+    contentArray01.push(callBaiDuMapUrl(content014,guangLanRoadPoint, '创新西路站', 'BoCNightShuttleBus', iosFlag, andrFlag));
 
     //人才公寓 015
-    var content0015 = 'BoC >>>>> 人才公寓站 </br> Dep Time: 20:00 & 21:00'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.217425,121.673896&title=BoCNightShuttleBus&content=人才公寓站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow015 = new BMap.InfoWindow(content0015, opts001);  // BOC
-    markerN001.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow015, pointArrayN[1]); 
-	})
+    var content015 = 'BoC >>>>> 人才公寓站 </br> Dep Time: 20:00 & 21:00';
+    contentArray01.push(callBaiDuMapUrl(content015,renCaiTangZhenPoint, '人才公寓站', 'BoCNightShuttleBus', iosFlag, andrFlag));
 
     //创新西路 016
-    var content0016 = 'BoC >>>>> 创新西路站 </br> Dep Time: 20:00 & 21:00'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.21074,121.665332&title=BoCNightShuttleBus&content=创新西路站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow016 = new BMap.InfoWindow(content0016, opts001);  // BOC
-    markerN002.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow016, pointArrayN[2]); 
-	})
+    var content016 = 'BoC >>>>> 创新西路站 </br> Dep Time: 20:00 & 21:00';
+    contentArray01.push(callBaiDuMapUrl(content016,chuangxinXiRoadPoint, '创新西路站', 'BoCNightShuttleBus', iosFlag, andrFlag));
 
     //唐镇路 017
-    var content0017 = 'BoC >>>>> 唐镇路站 </br> Dep Time: 20:00 & 21:00'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.215554,121.661223&title=BoCNightShuttleBus&content=唐镇路站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow017 = new BMap.InfoWindow(content0017, opts001);  // BOC
-    markerN003.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow017, pointArrayN[3]); 
-	})
+    var content017 = 'BoC >>>>> 唐镇路站 </br> Dep Time: 20:00 & 21:00';
+    contentArray01.push(callBaiDuMapUrl(content017,tangZhenRoadPoint, '唐镇路站', 'BoCNightShuttleBus', iosFlag, andrFlag));
 
     //张东路 018
-    var content0018 = 'BoC >>>>> 张东路站 </br> Dep Time: 20:00 & 21:00'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.207162,121.64246&title=BoCNightShuttleBus&content=张东路站&output=html">百度地图中打开</a></div>';
-
-    var infoWindow018 = new BMap.InfoWindow(content0018, opts001);  // BOC
-    markerN004.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow018, pointArrayN[4]); 
-	})
+    var content018 = 'BoC >>>>> 张东路站 </br> Dep Time: 20:00 & 21:00';
+    contentArray01.push(callBaiDuMapUrl(content018,zhangDongRoadPoint, '张东路', 'BoCNightShuttleBus', iosFlag, andrFlag));
 
     //盛夏路 019
-    var content0019 = 'BoC >>>>> 盛夏路站 </br> Dep Time: 20:00 & 21:00'+
-    '<div><a role="button" class="btn btn-primary btn-sm btn-block" href="http://api.map.baidu.com/marker?location=31.205107,121.638333&title=BoCNightShuttleBus&content=盛夏路站&output=html">百度地图中打开</a></div>';
+    var content019 = 'BoC >>>>> 盛夏路站 </br> Dep Time: 20:00 & 21:00';
+    contentArray01.push(callBaiDuMapUrl(content019,shengXiaRoadPoint, '盛夏路站', 'BoCNightShuttleBus', iosFlag, andrFlag));
 
-    var infoWindow019 = new BMap.InfoWindow(content0019, opts001);  // BOC
-    markerN005.addEventListener("click", function(e){          
-		map.openInfoWindow(infoWindow019, pointArrayN[5]); 
+    for(let i  = 0; i < contentArray01.length; i ++){
+        markerArrayN[i].addEventListener("click", function(){          
+		    map.openInfoWindow(new BMap.InfoWindow(contentArray01[i], opts001), pointArrayN[i]); 
 	})
+    }
 </script>    
 </html>
