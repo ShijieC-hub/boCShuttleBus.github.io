@@ -15,6 +15,7 @@
     #header{margin: 10px;}
     #header-content{margin-left: 15px;}
     #version-change{margin: 15px;}
+    #formAnoy{margin: 15px;}
 </style>
 
 <body>
@@ -34,37 +35,26 @@
               <li><a href="index.html">地图总览</a></li>
               <li><a href="nearestBus.html">最近班车</a></li>
               <li><a href="laboratory.html">实验室</a></li>
-              <li class="active"><a href="#">意见反馈&版本迭代</a></li>
+              <li class="active"><a href="contact.html">意见反馈&版本迭代</a></li>
             </ul>
           </div><!-- /.nav-collapse -->
         </div><!-- /.container -->
     </nav><!-- /.navbar -->
     <p> </br> </p>
     <p> </br> </p>
-    <div class="jumbotron" id="header">
-        <div id="header-content">
-            <h1><strong>您好！</strong></h1>
-            <p>久未前端，该小助手有诸多不足之处。盼您能提出宝贵的意见！祝入职顺利！</p>
-            <p><a class="btn btn-primary btn-lg" href="mailto:auroralights@163.com?subject=班车小助手意见反馈" role="button">邮件反馈</a></p>
-            <p><a class="btn btn-primary btn-lg" href="contactAnoy.html" role="button">匿名反馈</a></p>
-        </div>
-    </div>
-    <div id="version-change">
-        <h3>Demo Version</h3>
-        <h4><strong>2022/6/23: </strong></h4>
-        <li>地图总览：上下班，下夜班的标记点与距离范围</li>
-        </br>
-        <h4><strong>2022/6/24: </strong></h4>
-        <li>增加标记点的弹窗，及弹窗中的百度API调用</li>
-        <li>夜间通勤标记点标题与日间区分</li>
-        <li>增加提示弹窗</li>
-        <li>优化JS打点代码逻辑</li>
-        <li>优化布局</li>
-        </br>
-        <h4><strong>2022/6/25: 　</strong></h4>
-        <li>根据用户测试，修改 地图总览页 覆盖范围操作逻辑，调整 百度地图中打开 后的显示内容</li>
-        <li>根据不同访问终端，优化地图调起功能</li>
-        <li>优化JS调起代码逻辑</li>
+
+    <div id="formAnoy">
+        <form action="https://formspree.io/f/xnqwygqw" method="POST">
+            <div class="form-group">
+              <label for="exampleInputEmail1">邮箱地址</label>
+              <input class="form-control" id="exampleInputEmail1" name="email" value="example@163.com" disabled>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">反馈内容</label>
+              <textarea name="message" class="form-control" rows="3" placeholder="由于流量有限，请勿重复提交！"></textarea>
+              </br>
+            <button type="submit" class="btn btn-success btn-lg btn-block">提交</button>
+        </form>
     </div>
 </body>
-</html>>
+</html>
